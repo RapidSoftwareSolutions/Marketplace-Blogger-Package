@@ -1,0 +1,2449 @@
+{
+    "package": "Blogger",
+    "tagline": "Blogger API",
+    "description": "Blogger is a blog-publishing service that allows multi-user blogs with time-stamped entries.",
+    "image": "https:\/\/logo.clearbit.com\/blogger.com",
+    "repo": "https:\/\/github.com\/RapidSoftwareSolutions\/Marketplace-Blogger-Package",
+    "keywords": [
+        "API",
+        "blog",
+        "blogger",
+        "posting",
+        "google"
+    ],
+    "accounts": {
+        "domain": "http:\/\/blogger.com",
+        "credentials": [
+            "apiKey",
+            "apiSecret"
+        ]
+    },
+    "blocks": [
+        {
+            "name": "getAccessToken",
+            "description": "getAccessToken",
+            "args": [
+                {
+                    "name": "apiKey",
+                    "vendorName": "client_id",
+                    "type": "credentials",
+                    "info": "Api key from Google",
+                    "required": true
+                },
+                {
+                    "name": "apiSecret",
+                    "vendorName": "client_secret",
+                    "type": "credentials",
+                    "info": "Api secret from Google",
+                    "required": true
+                },
+                {
+                    "name": "code",
+                    "type": "String",
+                    "info": "code provided by user",
+                    "required": true
+                },
+                {
+                    "name": "redirectUrl",
+                    "vendorName": "redirect_uri",
+                    "type": "String",
+                    "info": "Your redirect url",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/oauth2\/v4\/token",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "client_id",
+                            "client_secret",
+                            "code",
+                            "redirect_uri"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getBlogById",
+            "description": "Retrieves a blog by its ID.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "maxPosts",
+                    "type": "Number",
+                    "info": "Maximum number of posts to retrieve along with the blog. When this parameter is not specified, no posts will be returned as part of the blog resource.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "maxPosts"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getBlogByUrl",
+            "description": "Retrieves a blog by its url.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogUrl",
+                    "vendorName": "url",
+                    "type": "String",
+                    "info": "Url of the blog",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/byurl",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "url"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "listUserBlogs",
+            "description": "Retrieves a list of blogs.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "info": "Id of the user",
+                    "required": true
+                },
+                {
+                    "name": "fetchUserInfo",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the response is a list of blogs with per-user information instead of just blogs.",
+                    "required": false
+                },
+                {
+                    "name": "view",
+                    "type": "Select",
+                    "options": [
+                        "ADMIN",
+                        "AUTHOR",
+                        "READER"
+                    ],
+                    "info": "Acceptable values are: \"ADMIN\": Admin level detail \"AUTHOR\": Author level detail \"READER\": Admin level detail",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/users\/${data['userId']}\/blogs",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "fetchUserInfo",
+                            "view"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "listPostComments",
+            "description": "Retrieves the list of comments for a post.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "endDate",
+                    "type": "DatePicker",
+                    "info": "Latest date of comment to fetch",
+                    "required": false
+                },
+                {
+                    "name": "fetchBodies",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the comments is included.",
+                    "required": false
+                },
+                {
+                    "name": "maxResults",
+                    "type": "Number",
+                    "info": "Maximum number of comments to include in the result.",
+                    "required": false
+                },
+                {
+                    "name": "pageToken",
+                    "type": "String",
+                    "info": "Continuation token if request is paged.",
+                    "required": false
+                },
+                {
+                    "name": "startDate",
+                    "type": "DatePicker",
+                    "info": "Earliest date of comment to fetch",
+                    "required": false
+                },
+                {
+                    "name": "view",
+                    "type": "Select",
+                    "options": [
+                        "ADMIN",
+                        "AUTHOR",
+                        "READER"
+                    ],
+                    "info": "Acceptable values are: \"ADMIN\": Admin level detail \"AUTHOR\": Author level detail \"READER\": Admin level detail",
+                    "required": false
+                },
+                {
+                    "name": "status",
+                    "type": "Select",
+                    "options": [
+                        "emptied",
+                        "live",
+                        "pending",
+                        "spam"
+                    ],
+                    "info": "Acceptable values are: \"emptied\": Comments that have had their content removed \"live\": Comments that are publicly visible \"pending\": Comments that are awaiting administrator approval \"spam\": Comments marked as spam by the administrator",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}\/comments",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "endDate",
+                            "maxResults",
+                            "fetchBodies",
+                            "pageToken",
+                            "startDate",
+                            "view",
+                            "status"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getPostComment",
+            "description": "Retrieves one comment resource by its commentId.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "commentId",
+                    "type": "String",
+                    "info": "Id of the comment",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}\/comments\/${data['commentId']}",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": []
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "approvePostComment",
+            "description": "Marks a comment as not spam.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "commentId",
+                    "type": "String",
+                    "info": "Id of the comment",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}\/comments\/${data['commentId']}",
+            "request": {
+                "method": "post",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": []
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "deletePostComment",
+            "description": "Delete a comment by ID.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "commentId",
+                    "type": "String",
+                    "info": "Id of the comment",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}\/comments\/${data['commentId']}",
+            "request": {
+                "method": "delete",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": []
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "listBlogComments",
+            "description": "Retrieves the comments for a blog, across all posts, possibly filtered.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "endDate",
+                    "type": "DatePicker",
+                    "info": "Latest date of comment to fetch",
+                    "required": false
+                },
+                {
+                    "name": "fetchBodies",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the comments is included.",
+                    "required": false
+                },
+                {
+                    "name": "maxResults",
+                    "type": "Number",
+                    "info": "Maximum number of comments to include in the result.",
+                    "required": false
+                },
+                {
+                    "name": "pageToken",
+                    "type": "String",
+                    "info": "Continuation token if request is paged.",
+                    "required": false
+                },
+                {
+                    "name": "startDate",
+                    "type": "DatePicker",
+                    "info": "Earliest date of comment to fetch",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/comments",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "endDate",
+                            "maxResults",
+                            "fetchBodies",
+                            "pageToken",
+                            "startDate"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "markCommentAsSpam",
+            "description": "Marks a comment as spam. This will set the status of the comment to spam, and hide it in the default comment rendering.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "commentId",
+                    "type": "String",
+                    "info": "Id of the comment",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}\/comments\/${data['commentId']}\/spam",
+            "request": {
+                "method": "post",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": []
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "removeCommentContent",
+            "description": "Removes the content of a comment.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "commentId",
+                    "type": "String",
+                    "info": "Id of the comment",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}\/comments\/${data['commentId']}\/removecontent",
+            "request": {
+                "method": "post",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": []
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "listBlogPages",
+            "description": "Retrieves the list of pages for a blog.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "fetchBodies",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the comments is included.",
+                    "required": false
+                },
+                {
+                    "name": "view",
+                    "type": "Select",
+                    "options": [
+                        "ADMIN",
+                        "AUTHOR",
+                        "READER"
+                    ],
+                    "info": "Acceptable values are: \"ADMIN\": Admin level detail \"AUTHOR\": Author level detail \"READER\": Admin level detail",
+                    "required": false
+                },
+                {
+                    "name": "status",
+                    "type": "Select",
+                    "options": [
+                        "draft",
+                        "imported",
+                        "live"
+                    ],
+                    "info": "Acceptable values are: \"draft\": Draft (unpublished) Pages \"imported\": Pages that have had their content removed \"live\": Pages that are publicly visible",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/pages",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "fetchBodies",
+                            "view",
+                            "status"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getSinglePage",
+            "description": "Retrieves one pages resource by its page ID.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "pageId",
+                    "type": "String",
+                    "info": "Id of the page",
+                    "required": true
+                },
+                {
+                    "name": "view",
+                    "type": "Select",
+                    "options": [
+                        "ADMIN",
+                        "AUTHOR",
+                        "READER"
+                    ],
+                    "info": "Acceptable values are: \"ADMIN\": Admin level detail \"AUTHOR\": Author level detail \"READER\": Admin level detail",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/pages\/{$data['pageId']}",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "view"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "deleteSinglePage",
+            "description": "Deletes one pages resource by its page ID.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "pageId",
+                    "type": "String",
+                    "info": "Id of the page",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/pages\/{$data['pageId']}",
+            "request": {
+                "method": "delete",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": []
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "addPage",
+            "description": "Add a page.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "isDraft",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Is page draft or not",
+                    "required": false
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "Page content",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "Page title",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/pages",
+            "request": {
+                "method": "post",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": [
+                            "isDraft",
+                            "content",
+                            "title"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "partPageUpdate",
+            "description": "Update existing page partly only with data you provide",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "pageId",
+                    "type": "String",
+                    "info": "Id of the page",
+                    "required": true
+                },
+                {
+                    "name": "publish",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether to publish page or not",
+                    "required": false
+                },
+                {
+                    "name": "revert",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether to revert page or not",
+                    "required": false
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "Page content",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "Page title",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/pages\/${data['pageId']}",
+            "request": {
+                "method": "patch",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": [
+                            "publish",
+                            "content",
+                            "title",
+                            "revert"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "fullPageUpdate",
+            "description": "Update existing page partly with data you provide. All empty fields will be cleared",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "pageId",
+                    "type": "String",
+                    "info": "Id of the page",
+                    "required": true
+                },
+                {
+                    "name": "publish",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether to publish page or not",
+                    "required": false
+                },
+                {
+                    "name": "revert",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether to revert page or not",
+                    "required": false
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "Page content",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "Page title",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/pages\/${data['pageId']}",
+            "request": {
+                "method": "put",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": [
+                            "publish",
+                            "content",
+                            "title",
+                            "revert"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "listPosts",
+            "description": "Retrieves a list of posts.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "endDate",
+                    "type": "DatePicker",
+                    "info": "Latest date of post to fetch",
+                    "required": false
+                },
+                {
+                    "name": "fetchBodies",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the post is included.",
+                    "required": false
+                },
+                {
+                    "name": "fetchImages",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether image URL metadata for each post is included.",
+                    "required": false
+                },
+                {
+                    "name": "labels",
+                    "type": "List",
+                    "structure": {
+                        "name": "label",
+                        "type": "String",
+                        "info": "Single label to search for"
+                    },
+                    "info": "Array of labels to search for",
+                    "required": false
+                },
+                {
+                    "name": "orderBy",
+                    "type": "Select",
+                    "options": [
+                        "published",
+                        "updated"
+                    ],
+                    "info": "Sort order applied to results.",
+                    "required": false
+                },
+                {
+                    "name": "maxResults",
+                    "type": "Number",
+                    "info": "Maximum number of comments to include in the result.",
+                    "required": false
+                },
+                {
+                    "name": "pageToken",
+                    "type": "String",
+                    "info": "Continuation token if request is paged.",
+                    "required": false
+                },
+                {
+                    "name": "startDate",
+                    "type": "DatePicker",
+                    "info": "Earliest date of comment to fetch",
+                    "required": false
+                },
+                {
+                    "name": "view",
+                    "type": "Select",
+                    "options": [
+                        "ADMIN",
+                        "AUTHOR",
+                        "READER"
+                    ],
+                    "info": "Acceptable values are: \"ADMIN\": Admin level detail \"AUTHOR\": Author level detail \"READER\": Admin level detail",
+                    "required": false
+                },
+                {
+                    "name": "status",
+                    "type": "Select",
+                    "options": [
+                        "daft",
+                        "live",
+                        "scheduled"
+                    ],
+                    "info": "Acceptable values are: \"draft\": Draft posts \"live\": Published posts \"scheduled\": Posts that are scheduled to publish in future.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "endDate",
+                            "maxResults",
+                            "fetchBodies",
+                            "pageToken",
+                            "startDate",
+                            "view",
+                            "status",
+                            "fetchImages",
+                            "labels",
+                            "orderBy"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getSinglePostById",
+            "description": "Retrieves one post by post ID.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "maxComments",
+                    "type": "Number",
+                    "info": "Maximum number of comments to retrieve as part of the the post resource. If this parameter is left unspecified, then no comments will be returned.",
+                    "required": false
+                },
+                {
+                    "name": "view",
+                    "type": "Select",
+                    "options": [
+                        "ADMIN",
+                        "AUTHOR",
+                        "READER"
+                    ],
+                    "info": "Acceptable values are: \"ADMIN\": Admin level detail \"AUTHOR\": Author level detail \"READER\": Admin level detail",
+                    "required": false
+                },
+                {
+                    "name": "fetchBody",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the post is included.",
+                    "required": false
+                },
+                {
+                    "name": "fetchImages",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether image URL metadata for each post is included.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "maxComments",
+                            "view",
+                            "fetchBody",
+                            "fetchImages"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "searchPosts",
+            "description": "Searches for a post that matches the given query terms.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "query",
+                    "vendorName": "q",
+                    "type": "String",
+                    "info": "Query terms to search for.",
+                    "required": true
+                },
+                {
+                    "name": "fetchBodies",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the post is included.",
+                    "required": false
+                },
+                {
+                    "name": "orderBy",
+                    "type": "Select",
+                    "options": [
+                        "published",
+                        "updated"
+                    ],
+                    "info": "The sort order applied to the search results. ",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/search",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "fetchBodies",
+                            "q",
+                            "orderBy"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "addPost",
+            "description": "Add a post.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "isDraft",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Is page draft or not",
+                    "required": false
+                },
+                {
+                    "name": "fetchBody",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the post is included.",
+                    "required": false
+                },
+                {
+                    "name": "fetchImages",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether image URL metadata for each post is included.",
+                    "required": false
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "Page content",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "Page title",
+                    "required": false
+                },
+                {
+                    "name": "location",
+                    "type": "Map",
+                    "info": "Your location",
+                    "required": false
+                },
+                {
+                    "name": "locationName",
+                    "type": "String",
+                    "info": "Your location name",
+                    "required": false
+                },
+                {
+                    "name": "locationSpan",
+                    "type": "String",
+                    "info": "Your location span",
+                    "required": false
+                },
+                {
+                    "name": "labels",
+                    "type": "List",
+                    "structure": {
+                        "name": "label",
+                        "type": "String",
+                        "info": "Single label to search for"
+                    },
+                    "info": "Array of labels to search for",
+                    "required": false
+                },
+                {
+                    "name": "titleLink",
+                    "type": "String",
+                    "info": "The title link URL, similar to atom's related link.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts",
+            "request": {
+                "method": "post",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": [
+                            "isDraft",
+                            "content",
+                            "title",
+                            "fetchBody",
+                            "fetchImages",
+                            "location",
+                            "locationName",
+                            "locationSpan",
+                            "labels",
+                            "titleLink"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "deletePost",
+            "description": "Deletes one post by post ID.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}",
+            "request": {
+                "method": "delete",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": []
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getSinglePostByPath",
+            "description": "Retrieves one post by post path.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postPath",
+                    "vendorName": "path",
+                    "type": "String",
+                    "info": "Path of the post",
+                    "required": true
+                },
+                {
+                    "name": "maxComments",
+                    "type": "Number",
+                    "info": "Maximum number of comments to retrieve as part of the the post resource. If this parameter is left unspecified, then no comments will be returned.",
+                    "required": false
+                },
+                {
+                    "name": "view",
+                    "type": "Select",
+                    "options": [
+                        "ADMIN",
+                        "AUTHOR",
+                        "READER"
+                    ],
+                    "info": "Acceptable values are: \"ADMIN\": Admin level detail \"AUTHOR\": Author level detail \"READER\": Admin level detail",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/bypath",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "maxComments",
+                            "view",
+                            "path"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "partPostUpdate",
+            "description": "Updates a post with information provided",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "isDraft",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Is page draft or not",
+                    "required": false
+                },
+                {
+                    "name": "fetchBody",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the post is included.",
+                    "required": false
+                },
+                {
+                    "name": "fetchImages",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether image URL metadata for each post is included.",
+                    "required": false
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "Page content",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "Page title",
+                    "required": false
+                },
+                {
+                    "name": "location",
+                    "type": "Map",
+                    "info": "Your location",
+                    "required": false
+                },
+                {
+                    "name": "locationName",
+                    "type": "String",
+                    "info": "Your location name",
+                    "required": false
+                },
+                {
+                    "name": "locationSpan",
+                    "type": "String",
+                    "info": "Your location span",
+                    "required": false
+                },
+                {
+                    "name": "labels",
+                    "type": "List",
+                    "structure": {
+                        "name": "label",
+                        "type": "String",
+                        "info": "Single label to search for"
+                    },
+                    "info": "Array of labels to search for",
+                    "required": false
+                },
+                {
+                    "name": "titleLink",
+                    "type": "String",
+                    "info": "The title link URL, similar to atom's related link.",
+                    "required": false
+                },
+                {
+                    "name": "publish",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether to publish page or not",
+                    "required": false
+                },
+                {
+                    "name": "revert",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether to revert page or not",
+                    "required": false
+                },
+                {
+                    "name": "maxComments",
+                    "type": "Number",
+                    "info": "Maximum number of comments to retrieve as part of the the post resource. If this parameter is left unspecified, then no comments will be returned.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/{$data['postId']}",
+            "request": {
+                "method": "patch",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": [
+                            "isDraft",
+                            "content",
+                            "title",
+                            "fetchBody",
+                            "fetchImages",
+                            "location",
+                            "locationName",
+                            "locationSpan",
+                            "labels",
+                            "titleLink",
+                            "publish",
+                            "revert",
+                            "maxComments"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "fullPostUpdate",
+            "description": "Updates a post with information provided, non-provided fields are removed",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "isDraft",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Is page draft or not",
+                    "required": false
+                },
+                {
+                    "name": "fetchBody",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the post is included.",
+                    "required": false
+                },
+                {
+                    "name": "fetchImages",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether image URL metadata for each post is included.",
+                    "required": false
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "Page content",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "Page title",
+                    "required": false
+                },
+                {
+                    "name": "location",
+                    "type": "Map",
+                    "info": "Your location",
+                    "required": false
+                },
+                {
+                    "name": "locationName",
+                    "type": "String",
+                    "info": "Your location name",
+                    "required": false
+                },
+                {
+                    "name": "locationSpan",
+                    "type": "String",
+                    "info": "Your location span",
+                    "required": false
+                },
+                {
+                    "name": "labels",
+                    "type": "List",
+                    "structure": {
+                        "name": "label",
+                        "type": "String",
+                        "info": "Single label to search for"
+                    },
+                    "info": "Array of labels to search for",
+                    "required": false
+                },
+                {
+                    "name": "titleLink",
+                    "type": "String",
+                    "info": "The title link URL, similar to atom's related link.",
+                    "required": false
+                },
+                {
+                    "name": "publish",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether to publish page or not",
+                    "required": false
+                },
+                {
+                    "name": "revert",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether to revert page or not",
+                    "required": false
+                },
+                {
+                    "name": "maxComments",
+                    "type": "Number",
+                    "info": "Maximum number of comments to retrieve as part of the the post resource. If this parameter is left unspecified, then no comments will be returned.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/{$data['postId']}",
+            "request": {
+                "method": "put",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": [
+                            "isDraft",
+                            "content",
+                            "title",
+                            "fetchBody",
+                            "fetchImages",
+                            "location",
+                            "locationName",
+                            "locationSpan",
+                            "labels",
+                            "titleLink",
+                            "publish",
+                            "revert",
+                            "maxComments"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "publishPost",
+            "description": "Publish a draft post. ",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "publishDate",
+                    "type": "DatePicker",
+                    "info": "The date and time to schedule the publishing of the Post.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}\/publish",
+            "request": {
+                "method": "post",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": [
+                            "publishDate"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "revertPost",
+            "description": "Revert a published or scheduled post to draft state, which removes the post from the publicly viewable content.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/posts\/${data['postId']}\/revert",
+            "request": {
+                "method": "post",
+                "params": [
+                    {
+                        "paramsType": "json",
+                        "bodyParams": [
+                            "publishDate"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getUserInfo",
+            "description": "Retrieves a user by user ID. ",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "info": "Id of the user",
+                    "required": true
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/users\/${data['userId']}",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": []
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getBlogUserInfo",
+            "description": "Gets one blog and user info pair by blogId and userId.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "info": "Id of the user",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "maxPosts",
+                    "type": "Number",
+                    "info": "Maximum number of posts to pull back with the blog.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/users\/${data['userId']}\/blogs\/{$data['blogId']}",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "maxPosts"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getBlogPageViews",
+            "description": "Retrieve pageview stats for a Blog.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "range",
+                    "type": "Select",
+                    "options": [
+                        "30DAYS",
+                        "7DAYS",
+                        "all"
+                    ],
+                    "info": "Acceptable values are: \"30DAYS\": Page view counts from the last thirty days. \"7DAYS\": Page view counts from the last seven days. \"all\": Total page view counts from all time.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/blogs\/${data['blogId']}\/pageviews",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "range"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getPostUserInfo",
+            "description": "Gets one post and user info pair by postId and userId.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "info": "Id of the user",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "postId",
+                    "type": "String",
+                    "info": "Id of the post",
+                    "required": true
+                },
+                {
+                    "name": "maxComments",
+                    "type": "Number",
+                    "info": "Maximum number of comments to pull back with the post.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/users\/${data['userId']}\/blogs\/{$data['blogId']}\/posts\/{$data['postId']}",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "maxComments"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "listPostUserInfo",
+            "description": "Retrieves a list of post and post user info pairs, possibly filtered. The post user info contains per-user information about the post, such as access rights, specific to the user.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "String",
+                    "info": "Accesss token from Google",
+                    "required": true
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "info": "Id of the user",
+                    "required": true
+                },
+                {
+                    "name": "blogId",
+                    "type": "String",
+                    "info": "Id of the blog",
+                    "required": true
+                },
+                {
+                    "name": "endDate",
+                    "type": "DatePicker",
+                    "info": "Latest date of post to fetch",
+                    "required": false
+                },
+                {
+                    "name": "fetchBodies",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether the body content of the post is included.",
+                    "required": false
+                },
+                {
+                    "name": "fetchImages",
+                    "type": "Select",
+                    "options": [
+                        "true",
+                        "false"
+                    ],
+                    "info": "Whether image URL metadata for each post is included.",
+                    "required": false
+                },
+                {
+                    "name": "labels",
+                    "type": "List",
+                    "structure": {
+                        "name": "label",
+                        "type": "String",
+                        "info": "Single label to search for"
+                    },
+                    "info": "Array of labels to search for",
+                    "required": false
+                },
+                {
+                    "name": "orderBy",
+                    "type": "Select",
+                    "options": [
+                        "published",
+                        "updated"
+                    ],
+                    "info": "Sort order applied to results.",
+                    "required": false
+                },
+                {
+                    "name": "maxResults",
+                    "type": "Number",
+                    "info": "Maximum number of comments to include in the result.",
+                    "required": false
+                },
+                {
+                    "name": "pageToken",
+                    "type": "String",
+                    "info": "Continuation token if request is paged.",
+                    "required": false
+                },
+                {
+                    "name": "startDate",
+                    "type": "DatePicker",
+                    "info": "Earliest date of comment to fetch",
+                    "required": false
+                },
+                {
+                    "name": "view",
+                    "type": "Select",
+                    "options": [
+                        "ADMIN",
+                        "AUTHOR",
+                        "READER"
+                    ],
+                    "info": "Acceptable values are: \"ADMIN\": Admin level detail \"AUTHOR\": Author level detail \"READER\": Admin level detail",
+                    "required": false
+                },
+                {
+                    "name": "status",
+                    "type": "Select",
+                    "options": [
+                        "daft",
+                        "live",
+                        "scheduled"
+                    ],
+                    "info": "Acceptable values are: \"draft\": Draft posts \"live\": Published posts \"scheduled\": Posts that are scheduled to publish in future.",
+                    "required": false
+                }
+            ],
+            "url": "https:\/\/www.googleapis.com\/blogger\/v3\/users\/${data['userId']}\/blogs\/{$data['blogId']}\/posts",
+            "request": {
+                "method": "get",
+                "params": [
+                    {
+                        "paramsType": "query",
+                        "bodyParams": [
+                            "endDate",
+                            "maxResults",
+                            "fetchBodies",
+                            "pageToken",
+                            "startDate",
+                            "view",
+                            "status",
+                            "fetchImages",
+                            "labels",
+                            "orderBy"
+                        ]
+                    }
+                ],
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        }
+    ]
+}
