@@ -22,7 +22,6 @@ $app->post('/api/Blogger/listPostComments', function ($request, $response) {
 
     $client = $this->httpClient;
     $query_str = "https://www.googleapis.com/blogger/v3/blogs/${data['blogId']}/posts/${data['postId']}/comments";
-
     $requestParams = \Models\Params::createRequestBody($data, $bodyParams);
     $requestParams['headers'] = ["Authorization"=>"Bearer {$data['accessToken']}"];
 

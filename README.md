@@ -6,7 +6,6 @@ Blogger is a blog-publishing service that allows multi-user blogs with time-stam
 * Credentials: apiKey, apiSecret
 
 ## How to get credentials: 
-## How to get credentials: 
 1. Go to the [Google API Console](https://console.developers.google.com/flows/enableapi?apiid=prediction)
 2. Create or select a project.
 3. Click Continue to enable the API.
@@ -376,16 +375,6 @@ Retrieve pageview stats for a Blog.
 | blogId     | String| Id of the blog
 | range      | Select| Acceptable values are: "30DAYS": Page view counts from the last thirty days. "7DAYS": Page view counts from the last seven days. "all": Total page view counts from all time.
 
-## Blogger.getPostUserInfo
-Gets one post and user info pair by postId and userId.
-
-| Field      | Type  | Description
-|------------|-------|----------
-| accessToken| String| Accesss token from Google
-| userId     | String| Id of the user
-| blogId     | String| Id of the blog
-| postId     | String| Id of the post
-| maxComments| Number| Maximum number of comments to pull back with the post.
 
 ## Blogger.listPostUserInfo
 Retrieves a list of post and post user info pairs, possibly filtered. The post user info contains per-user information about the post, such as access rights, specific to the user.
