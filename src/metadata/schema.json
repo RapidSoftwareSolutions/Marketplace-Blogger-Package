@@ -735,10 +735,9 @@
                     "type": "Select",
                     "options": [
                         "draft",
-                        "imported",
                         "live"
                     ],
-                    "info": "Acceptable values are: \"draft\": Draft (unpublished) Pages \"imported\": Pages that have had their content removed \"live\": Pages that are publicly visible",
+                    "info": "Acceptable values are: \"draft\": Draft (unpublished) Pages \"live\": Pages that are publicly visible",
                     "required": false
                 }
             ],

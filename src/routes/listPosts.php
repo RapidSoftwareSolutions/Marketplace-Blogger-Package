@@ -14,6 +14,14 @@ $app->post('/api/Blogger/listPosts', function ($request, $response) {
 
     $requiredParams = ['accessToken'=>'accessToken','blogId'=>'blogId'];
     $post_data['args']['labels'] = implode(',', $post_data['args']['labels']);
+    if(!empty($post_data['args']['endDate'])){
+        $endDate = new DateTime($post_data['args']['endDate']);
+        $post_data['args']['endDate'] = $endDate->format('Y-m-d\TH:i:s\Z');
+    }
+    if(!empty($post_data['args']['startDate'])){
+        $startDate = new DateTime($post_data['args']['startDate']);
+        $post_data['args']['startDate'] = $startDate->format('Y-m-d\TH:i:s\Z');
+    }
     $optionalParams = ['endDate'=>'endDate','fetchBodies'=>'fetchBodies','fetchImages'=>'fetchImages','labels'=>'labels','orderBy'=>'orderBy','maxResults'=>'maxResults','pageToken'=>'pageToken','startDate'=>'startDate','view'=>'view','status'=>'status'];
     $bodyParams = [
        'query' => ['endDate','maxResults','fetchBodies','pageToken','startDate','view','status','fetchImages','labels','orderBy']

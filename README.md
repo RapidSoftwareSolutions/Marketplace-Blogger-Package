@@ -147,7 +147,7 @@ Retrieves the list of pages for a blog.
 | blogId     | String| Id of the blog
 | fetchBodies| Select| Whether the body content of the comments is included.
 | view       | Select| Acceptable values are: "ADMIN": Admin level detail "AUTHOR": Author level detail "READER": Admin level detail
-| status     | Select| Acceptable values are: "draft": Draft (unpublished) Pages "imported": Pages that have had their content removed "live": Pages that are publicly visible
+| status     | Select| Acceptable values are: "draft": Draft (unpublished) Pages "live": Pages that are publicly visible
 
 ## Blogger.getSinglePage
 Retrieves one pages resource by its page ID.

@@ -25,6 +25,9 @@ $app->post('/api/Blogger/addPost', function ($request, $response) {
 
     $requestParams = \Models\Params::createRequestBody($data, $bodyParams);
     $requestParams['headers'] = ["Authorization"=>"Bearer {$data['accessToken']}"];
+    if (!empty($post_data['args']['isDraft'])) {
+        $query_str .= "?isDraft=" . $post_data['args']['isDraft'];
+    }
 
     try {
         $resp = $client->post($query_str, $requestParams);
